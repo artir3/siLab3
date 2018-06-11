@@ -6,29 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompMoves {
-    public void getMove(JButton[][] matrix) {
-        if (Points.POINTS.moves < matrix.length *matrix.length)
+    public void getMove() {
+        if (S.s.moves < S.s.MAX * S.s.MAX)
 //            randomMove(matrix);
 //        else
 //            minmax(matrix);
-            randomMoveFromRest(matrix);
+            randomMoveFromRest();
     }
 
-    private void randomMoveFromRest(JButton[][] matrix) {
+    private void randomMoveFromRest() {
         List<Point> rest = new ArrayList<>();
-        for (int _col = 0; _col < matrix.length; _col++) {
-            for (int _row = 0; _row < matrix.length; _row++) {
-                if (matrix[_row][_col].isEnabled())
+        for (int _col = 0; _col < S.s.MAX; _col++) {
+            for (int _row = 0; _row < S.s.MAX; _row++) {
+                if (S.s.MATRIX[_row][_col].isEnabled())
                     rest.add(new Point(_row,_col));
             }
         }
         int i = (int) (Math.random() * rest.size());
         Point chosen = rest.get(i);
-        matrix[chosen.row][chosen.col].setEnabled(false);
-        matrix[chosen.row][chosen.col].setBackground(Color.BLUE);
-        matrix[chosen.row][chosen.col].setText(Points.POINTS.moves+"");
-        Points.POINTS.kompScore += Check.points(matrix,chosen.row,chosen.col);
-        System.out.printf("%d %s na [%s], with points: %d\n",Points.POINTS.moves, Points.POINTS.who,matrix[chosen.row][chosen.col].getName(), Points.POINTS.kompScore);
+
+        S.s.MATRIX[chosen.row][chosen.col].setEnabled(false);
+        S.s.MATRIX[chosen.row][chosen.col].setBackground(Color.BLUE);
+        S.s.kompScore += CheckPoints.points(chosen.row,chosen.col);
+        System.out.printf("%d %s na [%s], with points: %d\n",S.s.moves, S.s.who,S.s.MATRIX[chosen.row][chosen.col].getName(), S.s.kompScore);
 
     }
 
