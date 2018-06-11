@@ -44,7 +44,7 @@ public class Check {
         Integer count = 0;
         for (int i = min(_row, _col); i < matrix.length; i++) {
             if (count != null) {
-//                System.out.printf("Sprawdzam lower [%d, %d]\n", _lowRow, _lowCol);
+                System.out.printf("%d Sprawdzam %s gore [%d, %d]\n",Points.POINTS.moves,Points.POINTS.who, _row, _col);
                 if (_col < matrix.length && _row > -1) {
                     if (isChousen(matrix[_row][_col])) {
                         count++;
@@ -64,9 +64,9 @@ public class Check {
         int _col = column - d_toUpper;
 
         Integer count = 0;
-        for (int i = min(max -_row,_col); i < matrix.length; i++) {
+        for (int i = min(_row,_col); i < matrix.length; i++) {
             if (count != null) {
-//                System.out.printf("Sprawdzam upper [%d, %d]\n", _lowRow, _lowCol);
+                System.out.printf("%d Sprawdzam %s w dół [%d, %d]\n",Points.POINTS.moves,Points.POINTS.who, _row, _col);
                 if (_row < matrix.length & _col < matrix.length) {
                     if (isChousen(matrix[_row][_col])) {
                         count++;

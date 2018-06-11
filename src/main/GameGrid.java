@@ -15,8 +15,7 @@
             GridLayout experimentLayout;
             CompMoves cm = new CompMoves();
             Check check = new Check();
-            private int max = 3, moves = 0;
-            public int playerScore = 0, kompScore = 0;
+            private int max = 3;
 
             public GameGrid(String name) {
                 super(name);
@@ -36,6 +35,7 @@
                 JPanel controls = new JPanel();
                 controls.setLayout(new GridLayout(max, max));
 
+
                 //Set up components preferred size
                 JButton[][] bList = new JButton[max][max];
 //                Dimension buttonSize = b.getPreferredSize();
@@ -50,17 +50,18 @@
                     bu.setName((i / max) + " " + (i % max));
                     bu.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            moves++;
+                            Points.POINTS.moves++;
                             bu.setBackground(Color.RED);
                             bu.setEnabled(false);
-                            bu.setText(bu.getName() );
-                            bu.setText(moves+"");
+//                            bu.setText(bu.getName() );
+                            bu.setText(Points.POINTS.moves+"");
                             String[] poz = bu.getName().split(" ");
-                            playerScore += check.points(bList,Integer.parseInt(poz[0]),Integer.parseInt(poz[0]));
-                            System.out.printf("%d Player ruch na [%s], with points: %d\n",moves,bu.getName(),playerScore);
-                            moves++;
-                            kompScore += cm.getMove(bList, moves);
-                            System.out.println(kompScore);
+                            Points.POINTS.who = "Player";
+                            Points.POINTS.playerScore += check.points(bList,Integer.parseInt(poz[0]),Integer.parseInt(poz[1]));
+                            System.out.printf("%d %s ruch na [%s], with points: %d\n", Points.POINTS.moves,Points.POINTS.who,bu.getName(),Points.POINTS.playerScore);
+                            Points.POINTS.moves++;
+                            Points.POINTS.who= "Komp";
+                            cm.getMove(bList);
 
                         }
                     });
