@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompMoves {
-    public void getMove(JButton[][] matrix, int moves, int kompScores) {
+    public int getMove(JButton[][] matrix, int moves) {
         if (moves < matrix.length *matrix.length)
 //            randomMove(matrix);
 //        else
 //            minmax(matrix);
-            randomMoveFromRest(matrix,kompScores);
+            return randomMoveFromRest(matrix, moves);
+        return 0;
     }
 
-    private void randomMoveFromRest(JButton[][] matrix, int kompScores) {
+    private int randomMoveFromRest(JButton[][] matrix, int moves) {
         List<Point> rest = new ArrayList<>();
         for (int _col = 0; _col < matrix.length; _col++) {
             for (int _row = 0; _row < matrix.length; _row++) {
@@ -26,8 +27,9 @@ public class CompMoves {
         Point chosen = rest.get(i);
         matrix[chosen.row][chosen.col].setEnabled(false);
         matrix[chosen.row][chosen.col].setBackground(Color.BLUE);
-        kompScores += Check.points(matrix,chosen.row,chosen.col);
-        System.out.printf("Komputer ruch na [%s], with points: %d\n",matrix[chosen.row][chosen.col].getName(),kompScores);
+        matrix[chosen.row][chosen.col].setText(moves+"");
+        System.out.printf("Komputer ruch na [%s], with points: ",matrix[chosen.row][chosen.col].getName());
+        return Check.points(matrix,chosen.row,chosen.col);
 
     }
 

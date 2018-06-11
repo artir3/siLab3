@@ -10,10 +10,10 @@ public class Check {
     private static int rowIsFull(JButton[][] matrix, int row) {
         int score = 0;
         for (int i = 0; i < matrix.length; i++) {
-            if (isExist(matrix[row][i])) {
-                score++;
+            if (!isChousen(matrix[row][i])) {
+                return 0;
             }
-            return 0;
+            score++;
         }
         return score;
     }
@@ -21,56 +21,75 @@ public class Check {
     private static int columnIsFull(JButton[][] matrix, int column) {
         int score = 0;
         for (int i = 0; i < matrix.length; i++) {
-            if (isExist(matrix[i][column])) {
-                score++;
+            if (!isChousen(matrix[i][column])) {
+                return 0;
             }
-            return 0;
+            score++;
         }
         return score;
     }
 
     private static int crossIsFull(JButton[][] matrix, int row, int column) {
         int score = 0, max = matrix.length - 1;
-        Integer su = 0, sl = 0;
-        int d_toUpper = min(row, column);
+        score += checkLineToDown(matrix,row,column,max);
+        score += checkLineToUp(matrix,row,column,max);
+        return score;
+    }
+
+    private static int checkLineToUp(JButton[][] matrix, int row, int column, int max){
         int d_toLow = min(max - row, column);
-        int _lowRow = row + d_toLow, _lowCol = column - d_toLow;
-        for (int i = min(_lowRow, _lowCol); i < matrix.length; i++) {
-            if (sl != null) {
-                _lowRow--;
-                _lowCol++;
+        int _row = row + d_toLow;
+        int _col = column - d_toLow;
+
+        Integer count = 0;
+        for (int i = min(_row, _col); i < matrix.length; i++) {
+            if (count != null) {
 //                System.out.printf("Sprawdzam lower [%d, %d]\n", _lowRow, _lowCol);
-                if (_lowCol < matrix.length && _lowRow > -1) {
-                    if (isExist(matrix[_lowRow][_lowCol])) {
-                        sl++;
+                if (_col < matrix.length && _row > -1) {
+                    if (isChousen(matrix[_row][_col])) {
+                        count++;
                     } else {
-                        sl = null;
+                        count = null;
                     }
-                }
-            }
-            _lowRow = row - d_toUpper;
-            _lowCol = column - d_toUpper;
-            if (su != null) {
-                _lowRow++;
-                _lowCol++;
-//                System.out.printf("Sprawdzam upper [%d, %d]\n", _lowRow, _lowCol);
-                if (_lowRow < matrix.length & _lowCol < matrix.length) {
-                    if (isExist(matrix[_lowRow][_lowCol])) {
-                        su++;
-                    } else {
-                        su = null;
-                    }
+                _row--;
+                _col++;
                 }
             }
         }
-        return (sl != null ? sl : 0) + (su != null ? su : 0);
+        return count == null? 0: count;
+    }
+    private static int checkLineToDown(JButton[][] matrix, int row, int column, int max){
+        int d_toUpper = min(row, column);
+        int _row = row - d_toUpper;
+        int _col = column - d_toUpper;
+
+        Integer count = 0;
+        for (int i = min(max -_row,_col); i < matrix.length; i++) {
+            if (count != null) {
+//                System.out.printf("Sprawdzam upper [%d, %d]\n", _lowRow, _lowCol);
+                if (_row < matrix.length & _col < matrix.length) {
+                    if (isChousen(matrix[_row][_col])) {
+                        count++;
+                    } else {
+                        count = null;
+                    }
+                _row++;
+                _col++;
+                }
+            }
+        }
+        return count == null? 0: count;
     }
 
     public static int points(JButton[][] matrix, int row, int column) {
-        return crossIsFull(matrix, row, column) + columnIsFull(matrix, column) + rowIsFull(matrix, row);
+        return
+                crossIsFull(matrix, row, column)
+//                columnIsFull(matrix, column)
+//                        rowIsFull(matrix, row)
+ ;
     }
 
-    private static boolean isExist(JButton button) {
+    private static boolean isChousen(JButton button) {
         return button != null && !button.isEnabled();
     }
 
