@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
 
 public class GameGrid extends JFrame {
     static final String gapList[] = {"0", "10", "15", "20"};
@@ -19,7 +20,7 @@ public class GameGrid extends JFrame {
     public GameGrid(String name) {
         super(name);
         setResizable(false);
-        experimentLayout = new GridLayout(S.s.MAX, S.s.MAX);
+        experimentLayout = new GridLayout(Singleton.singleton.MAX, Singleton.singleton.MAX);
     }
 
     public void initGaps() {
@@ -32,23 +33,23 @@ public class GameGrid extends JFrame {
         final JPanel compsToExperiment = new JPanel();
         compsToExperiment.setLayout(experimentLayout);
         JPanel controls = new JPanel();
-        controls.setLayout(new GridLayout(S.s.MAX, S.s.MAX));
-
-
-        //Set up components preferred size
-//                Dimension buttonSize = b.getPreferredSize();
-        compsToExperiment.setPreferredSize(new Dimension((50 + maxGap) * S.s.MAX,
-                (50 + maxGap) * S.s.MAX));
-        //Add buttons to experiment with Grid Layout
-        for (int i = 0; i < S.s.MAX * S.s.MAX; i++) {
+        controls.setLayout(new GridLayout(Singleton.singleton.MAX, Singleton.singleton.MAX));
+        compsToExperiment.setPreferredSize(new Dimension((50 + maxGap) * Singleton.singleton.MAX,
+                (50 + maxGap) * Singleton.singleton.MAX));
+        for (int i = 0; i < Singleton.singleton.MAX * Singleton.singleton.MAX; i++) {
             JButton button = newButton(i);
-            S.s.MATRIX[i / S.s.MAX][i % S.s.MAX] = button;
+            Singleton.singleton.MATRIX[i / Singleton.singleton.MAX][i % Singleton.singleton.MAX] = button;
             compsToExperiment.add(button);
 
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     playerMove(button);
                     komputerMove();
+                    if (Singleton.singleton.moves >= Singleton.singleton.MAX * Singleton.singleton.MAX) {
+                        System.out.println(Singleton.singleton.playerScore < Singleton.singleton.kompScore ? "KOMPUETER WYGRAL" : Singleton.singleton.playerScore == Singleton.singleton.kompScore ? "REMIS" : "GRACZ WYGRAL");
+                        System.out.printf("Gracz zdobył: %d punktów\n", Singleton.singleton.playerScore);
+                        System.out.printf("Komputer zdobył: %d punktów.", Singleton.singleton.kompScore);
+                    }
                 }
             });
 
@@ -60,25 +61,24 @@ public class GameGrid extends JFrame {
     }
 
     void playerMove(JButton button) {
-        S.s.moves++;
+        Singleton.singleton.moves++;
         button.setBackground(Color.RED);
         button.setEnabled(false);
         String[] poz = button.getName().split(" ");
-        S.s.who = "Player";
-        S.s.playerScore += checkPoints.points(Integer.parseInt(poz[0]), Integer.parseInt(poz[1]));
-        System.out.printf("%d %s ruch na [%s], with points: %d\n", S.s.moves, S.s.who, button.getName(), S.s.playerScore);
+        Singleton.singleton.who = "Player";
+        Singleton.singleton.playerScore += checkPoints.points(Integer.parseInt(poz[0]), Integer.parseInt(poz[1]));
     }
 
     void komputerMove() {
-        S.s.moves++;
-        S.s.who = "Komp";
+        Singleton.singleton.moves++;
+        Singleton.singleton.who = "Komp";
         cm.getMove();
     }
 
     private JButton newButton(int i) {
         JButton button = new JButton();
         button.setEnabled(true);
-        button.setName((i / S.s.MAX) + " " + (i % S.s.MAX));
+        button.setName((i / Singleton.singleton.MAX) + " " + (i % Singleton.singleton.MAX));
         button.setBackground(Color.WHITE);
         return button;
     }
@@ -92,6 +92,9 @@ public class GameGrid extends JFrame {
     }
 
     public static void main(String[] args) {
+        System.out.println("Proszę wpisać wartość");
+        Scanner scanner = new Scanner(System.in);
+        Singleton.singleton.setMatixSize(scanner.nextInt());
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
         } catch (UnsupportedLookAndFeelException ex) {

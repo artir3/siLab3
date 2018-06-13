@@ -7,8 +7,8 @@ import static java.lang.Math.min;
 public class CheckPoints {
     private static int rowIsFull(int row) {
         int score = 0;
-        for (int i = 0; i < S.s.MAX; i++) {
-            if (!isChousen(S.s.MATRIX[row][i])) {
+        for (int i = 0; i < Singleton.singleton.MAX; i++) {
+            if (!isChousen(Singleton.singleton.MATRIX[row][i])) {
                 return 0;
             }
             score++;
@@ -18,8 +18,8 @@ public class CheckPoints {
 
     private static int columnIsFull(int column) {
         int score = 0;
-        for (int i = 0; i < S.s.MAX; i++) {
-            if (!isChousen(S.s.MATRIX[i][column])) {
+        for (int i = 0; i < Singleton.singleton.MAX; i++) {
+            if (!isChousen(Singleton.singleton.MATRIX[i][column])) {
                 return 0;
             }
             score++;
@@ -28,7 +28,7 @@ public class CheckPoints {
     }
 
     private static int crossIsFull(int row, int column) {
-        int score = 0, max = S.s.MAX - 1;
+        int score = 0, max = Singleton.singleton.MAX - 1;
         score += checkLineToDown(row,column,max);
         score += checkLineToUp(row,column,max);
         return score;
@@ -40,10 +40,10 @@ public class CheckPoints {
         int _col = column - d_toLow;
 
         Integer count = 0;
-        for (int i = min(_row, _col); i < S.s.MAX; i++) {
+        for (int i = min(_row, _col); i < Singleton.singleton.MAX; i++) {
             if (count != null) {
-                if (_col < S.s.MAX && _row > -1) {
-                    if (isChousen(S.s.MATRIX[_row][_col])) {
+                if (_col < Singleton.singleton.MAX && _row > -1) {
+                    if (isChousen(Singleton.singleton.MATRIX[_row][_col])) {
                         count++;
                     } else {
                         count = null;
@@ -61,10 +61,10 @@ public class CheckPoints {
         int _col = column - d_toUpper;
 
         Integer count = 0;
-        for (int i = min(_row,_col); i < S.s.MAX; i++) {
+        for (int i = min(_row,_col); i < Singleton.singleton.MAX; i++) {
             if (count != null) {
-                if (_row < S.s.MAX & _col < S.s.MAX) {
-                    if (isChousen(S.s.MATRIX[_row][_col])) {
+                if (_row < Singleton.singleton.MAX & _col < Singleton.singleton.MAX) {
+                    if (isChousen(Singleton.singleton.MATRIX[_row][_col])) {
                         count++;
                     } else {
                         count = null;
